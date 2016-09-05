@@ -9,7 +9,7 @@
 						<h1>{{ post['title'] | safe }}</h1>
 						<p><span class="icon-time">&nbsp;</span><i>Posted on {{ post['date'] |formatdate }} by {{ post['author'] }}</i></p>
 						<div class="social row-fluid">
-					        <!-- AddThis Button BEGIN -->
+					        <!-- AddThis Button BEGIN 
 							<div class="addthis_toolbox addthis_default_style addthis_16x16_style">
 								<a class="addthis_button_twitter"></a>
 								<a class="addthis_button_facebook"></a>
@@ -18,22 +18,22 @@
 								<a class="addthis_button_pocket"></a>
 							</div>
 							<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-526fe54e082798d3"></script>
-							<!-- AddThis Button END -->
+							AddThis Button END -->
 				        </div>
 					</div>
 					<div class="content article">
-						{{ post['preview']|markdown }}
-						{{ post['body']|markdown }}
+						{{ post['preview']}}
+						{{ post['body']}}
 					</div>
 					<div class="infopanel">
-						<div class="tags">
-							<i>tags:</i>
-							{%- if post['tags'] -%}
+						{%- if post['tags'] -%}
+							<div class="tags">
+								<i>tags:</i>
 								{%- for tag in post['tags'] -%}
 									&nbsp;<a href="{{ url_for('posts_by_tag', tag=tag) }}">{{ tag }}</a>
 								{%- endfor -%}
-							{%- endif -%}
-						</div>
+							</div>
+						{%- endif -%}
 					</div>
 				</div>
 			</div>

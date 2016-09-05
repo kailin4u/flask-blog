@@ -1,7 +1,8 @@
+#!/usr/bin/env python
 import cgi
 import os
+from uuid import uuid1
 from flask import Flask, render_template, abort, url_for, request, flash, session, redirect
-from flaskext.markdown import Markdown
 from mdx_github_gists import GitHubGistExtension
 from mdx_strike import StrikeExtension
 from mdx_quote import QuoteExtension
@@ -15,11 +16,6 @@ from helper_functions import *
 
 
 app = Flask('FlaskBlog')
-md = Markdown(app)
-md.register_extension(GitHubGistExtension)
-md.register_extension(StrikeExtension)
-md.register_extension(QuoteExtension)
-md.register_extension(MultilineCodeExtension)
 app.config.from_object('config')
 
 
@@ -301,7 +297,7 @@ def recent_feed():
     posts = postClass.get_posts(int(app.config['PER_PAGE']), 0)
     for post in posts['data']:
         post_entry = post['preview'] if post['preview'] else post['body']
-        feed.add(post['title'], md(post_entry),
+        feed.add(post['title'], (post_entry),
                  content_type='html',
                  author=post['author'],
                  url=make_external(
@@ -406,6 +402,21 @@ def install():
                            error_type=error_type,
                            meta_title='Install')
 
+@app.route('/upload', methods=['POST'])
+@login_required()
+def upload():
+    error = None
+    content = request.form.get("upload")
+    filename = uuid1()
+    f = open("static/upload" + filename,"wb")
+    f.write(content)
+    f.close()
+    error_type = 'validate'
+    return {
+    "uploaded": 1,
+    "fileName": filename,
+    "url": "/static/upload/" + filename
+        }
 
 @app.before_request
 def csrf_protect():

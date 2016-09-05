@@ -2,7 +2,7 @@ import pymongo
 import os
 
 CONNECTION_STRING = "mongodb://localhost"  # replace it with your settings
-CONNECTION = pymongo.MongoClient(CONNECTION_STRING)
+CONNECTION = pymongo.MongoClient(CONNECTION_STRING,connect=False)
 
 '''Leave this as is if you dont have other configuration'''
 DATABASE = CONNECTION.blog
