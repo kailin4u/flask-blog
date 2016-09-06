@@ -406,11 +406,11 @@ def install():
 @app.route('/upload', methods=['POST'])
 @login_required()
 def upload():
-    content = request.form.get("upload")
+    f = request.files["upload"]
     filename = str(uuid1())
-    with open("static/upload/" + filename,"wb+") as f:
-        f.write(content)
-    return json.dumps({ "uploaded": 1, "fileName": filename, "url": "/static/upload/" + filename })
+    f.save("static/upload/" + filename)
+    url = "/static/upload/" + filename
+    return json.dumps( { "uploaded": 1, "fileName": filename, "url": "/static/upload/" + filename })
 
 @app.before_request
 def csrf_protect():
