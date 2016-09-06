@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import cgi
 import os
+import json
 from uuid import uuid1
 from flask import Flask, render_template, abort, url_for, request, flash, session, redirect
 from mdx_github_gists import GitHubGistExtension
@@ -405,22 +406,15 @@ def install():
 @app.route('/upload', methods=['POST'])
 @login_required()
 def upload():
-    error = None
     content = request.form.get("upload")
-    filename = uuid1()
-    f = open("static/upload" + filename,"wb")
-    f.write(content)
-    f.close()
-    error_type = 'validate'
-    return {
-    "uploaded": 1,
-    "fileName": filename,
-    "url": "/static/upload/" + filename
-        }
+    filename = str(uuid1())
+    with open("static/upload/" + filename,"wb+") as f:
+        f.write(content)
+    return json.dumps({ "uploaded": 1, "fileName": filename, "url": "/static/upload/" + filename })
 
 @app.before_request
 def csrf_protect():
-    if request.method == "POST":
+    if request.method == "POST" and request.path != "/upload":
         token = session.pop('_csrf_token', None)
         if not token or token != request.form.get('_csrf_token'):
             abort(400)
