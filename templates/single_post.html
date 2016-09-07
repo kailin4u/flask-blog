@@ -23,7 +23,7 @@
 					</div>
 					<div class="content article">
 						{{ post['preview']}}
-						{{ post['body']}}
+						{{ post['body']|safe}}
 					</div>
 					<div class="infopanel">
 						{%- if post['tags'] -%}
