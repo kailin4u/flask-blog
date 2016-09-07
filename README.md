@@ -37,7 +37,7 @@ pass:demo
 
 
 # Installation:
-`git clone https://github.com/dmaslov/flask-blog.git`
+`git clone https://github.com/kailin4u/flask-blog.git`
 
 `cd flask-blog`
 
