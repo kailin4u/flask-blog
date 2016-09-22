@@ -41,4 +41,9 @@
 	{%- endif -%}
 	{%- include 'sidebar.html' -%}
 {%- endblock -%}
-{%- block additional_js -%}<script src="{{ url_for('static', filename='js/lightbox-2.6.min.js') }}"></script>{%- endblock -%}
+{%- block additional_js -%}
+<script src="{{ url_for('static', filename='js/lightbox-2.6.min.js') }}"></script>
+<link href="{{ url_for('static',filename='ckeditor/plugins/codesnippet/lib/highlight/styles/arta.css')}}" rel="stylesheet">
+<script src="{{ url_for('static',filename='ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js') }}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{%- endblock -%}
