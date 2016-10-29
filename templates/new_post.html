@@ -5,11 +5,13 @@
 		{% set post_preview = session['post-preview'].get('preview', None) %}
 		{% set post_body = session['post-preview'].get('body', None) %}
 		{% set post_tags = session['post-preview'].get('tags', None) %}
+		{% set post_permalink = session['post-preview'].get('permalink', None) %}
 	{% else %}
 		{% set post_title = '' %}
 		{% set post_preview = '' %}
 		{% set post_body = '' %}
 		{% set post_tags = '' %}
+		{% set post_permalink = ''%}
 	{% endif %}
 
 	<div class="post clearfix">
@@ -29,6 +31,12 @@
 						{%- endif -%}
 					{%- endwith -%}
 					<form id="post-form" role="form" method="post" action="{{ url_for('new_post') }}">
+						<div class="form-group {% if error and error_type == 'validate' %} has-error{% endif %}">
+							{%- if error and error_type == 'validate' -%}
+								<label class="control-label" for="post-permalink">Required field</label>
+							{%- endif -%}
+						    <input type="text" class="form-control" name="post-permalink" id="post-permalink" placeholder="Post permalink" value="{{ post_permalink| safe }}" required>
+					    </div>
 						<div class="form-group {% if error and error_type == 'validate' %} has-error{% endif %}">
 							{%- if error and error_type == 'validate' -%}
 								<label class="control-label" for="post-title">Required field</label>

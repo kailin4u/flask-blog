@@ -9,5 +9,5 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.uiColor = '#AADC6E';
 	config.uploadUrl = '/upload';
 	config.extraPlugins = 'codesnippet';
-        config.codeSnippet_theme = 'atomonedark';
+    config.codeSnippet_theme = 'github';
 };

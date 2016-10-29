@@ -13,7 +13,7 @@ class Post:
 
     def get_posts(self, limit, skip, tag=None, search=None):
         self.response['error'] = None
-        cond = {}
+        cond = {"hide":{"$ne":True}}
         if tag is not None:
             cond = {'tags': tag}
         elif search is not None:
@@ -146,7 +146,7 @@ class Post:
 
     @staticmethod
     def validate_post_data(post_data):
-        permalink = random_string(12)
+        #permalink = random_string(12)
         #exp = re.compile('\W')
         #whitespace = re.compile('\s')
         #temp_title = whitespace.sub("_", post_data['title'])
@@ -156,7 +156,7 @@ class Post:
         post_data['preview'] = cgi.escape(post_data['preview'], quote=True)
         #post_data['body'] = cgi.escape(post_data['body'], quote=True)
         post_data['date'] = datetime.datetime.utcnow()
-        post_data['permalink'] = permalink
+        post_data['permalink'] = cgi.escape(post_data['permalink'])
 
         return post_data
 

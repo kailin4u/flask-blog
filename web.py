@@ -85,6 +85,7 @@ def new_post():
     if request.method == 'POST':
         post_title = request.form.get('post-title').strip()
         post_full = request.form.get('post-full')
+        post_permalink = request.form.get('post-permalink')
 
         if not post_title or not post_full:
             error = True
@@ -95,16 +96,15 @@ def new_post():
                          'preview': request.form.get('post-short'),
                          'body': post_full,
                          'tags': tags_array,
+                         'permalink': post_permalink,
                          'author': session['user']['username']}
 
             post = postClass.validate_post_data(post_data)
             if request.form.get('post-preview') == '1':
                 session['post-preview'] = post
-                session[
-                    'post-preview']['action'] = 'edit' if request.form.get('post-id') else 'add'
+                session['post-preview']['action'] = 'edit' if request.form.get('post-id') else 'add'
                 if request.form.get('post-id'):
-                    session[
-                        'post-preview']['redirect'] = url_for('post_edit', id=request.form.get('post-id'))
+                    session[ 'post-preview']['redirect'] = url_for('post_edit', id=request.form.get('post-id'))
                 else:
                     session['post-preview']['redirect'] = url_for('new_post')
                 return redirect(url_for('post_preview'))
@@ -462,5 +462,5 @@ if not app.config['DEBUG']:
     app.logger.addHandler(file_handler)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)),
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 9097)),
             debug=app.config['DEBUG'])
