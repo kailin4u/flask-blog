@@ -10,6 +10,7 @@ class Settings:
         self.config['PER_PAGE'] = 15
         self.config['SEARCH'] = False
         self.config['BLOG_TITLE'] = 'Blog'
+        self.config['BLOG_BEIAN'] = ''
         self.config['BLOG_DESCRIPTION'] = ''
 
         self.response = {'error': None, 'data': None}
@@ -25,6 +26,8 @@ class Settings:
                     'use_search', self.config['SEARCH'])
                 self.config['BLOG_TITLE'] = cursor.get(
                     'title', self.config['BLOG_TITLE'])
+                self.config['BLOG_BEIAN'] = cursor.get(
+                    'beian', self.config['BLOG_BEIAN'])
                 self.config['BLOG_DESCRIPTION'] = cursor.get(
                     'description', self.config['BLOG_DESCRIPTION'])
             return self.config

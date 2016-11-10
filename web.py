@@ -27,7 +27,7 @@ def index(page):
     posts = postClass.get_posts(int(app.config['PER_PAGE']), skip)
     count = postClass.get_total_count()
     pag = pagination.Pagination(page, app.config['PER_PAGE'], count)
-    return render_template('index.html', posts=posts['data'], pagination=pag, meta_title=app.config['BLOG_TITLE'])
+    return render_template('index.html', posts=posts['data'], pagination=pag, meta_title=app.config['BLOG_TITLE'],default_settings=app.config)
 
 
 @app.route('/tag/<tag>', defaults={'page': 1})
@@ -39,7 +39,7 @@ def posts_by_tag(tag, page):
     if not posts['data']:
         abort(404)
     pag = pagination.Pagination(page, app.config['PER_PAGE'], count)
-    return render_template('index.html', posts=posts['data'], pagination=pag, meta_title='Posts by tag: ' + tag)
+    return render_template('index.html', posts=posts['data'], pagination=pag, meta_title='Posts by tag: ' + tag,default_settings=app.config)
 
 
 @app.route('/post/<permalink>')
@@ -47,7 +47,7 @@ def single_post(permalink):
     post = postClass.get_post_by_permalink(permalink)
     if not post['data']:
         abort(404)
-    return render_template('single_post.html', post=post['data'], meta_title=app.config['BLOG_TITLE'] + '::' + post['data']['title'])
+    return render_template('single_post.html', post=post['data'], meta_title=app.config['BLOG_TITLE'] + '::' + post['data']['title'],default_settings=app.config)
 
 
 @app.route('/q/<query>', defaults={'page': 1})
@@ -133,7 +133,8 @@ def new_post():
     return render_template('new_post.html',
                            meta_title='New post',
                            error=error,
-                           error_type=error_type)
+                           error_type=error_type,
+                           default_settings=app.config)
 
 
 @app.route('/post_preview')
@@ -156,7 +157,7 @@ def posts(page):
     if not posts['data']:
         abort(404)
 
-    return render_template('posts.html', posts=posts['data'], pagination=pag, meta_title='Posts')
+    return render_template('posts.html', posts=posts['data'], pagination=pag, meta_title='Posts',default_settings=app.config)
 
 
 @app.route('/post_edit?id=<id>')
@@ -231,21 +232,21 @@ def logout():
 @login_required()
 def users_list():
     users = userClass.get_users()
-    return render_template('users.html', users=users['data'], meta_title='Users')
+    return render_template('users.html', users=users['data'], meta_title='Users',default_settings=app.config)
 
 
 @app.route('/add_user')
 @login_required()
 def add_user():
     gravatar_url = userClass.get_gravatar_link()
-    return render_template('add_user.html', gravatar_url=gravatar_url, meta_title='Add user')
+    return render_template('add_user.html', gravatar_url=gravatar_url, meta_title='Add user',default_settings=app.config)
 
 
 @app.route('/edit_user?id=<id>')
 @login_required()
 def edit_user(id):
     user = userClass.get_user(id)
-    return render_template('edit_user.html', user=user['data'], meta_title='Edit user')
+    return render_template('edit_user.html', user=user['data'], meta_title='Edit user',default_settings=app.config)
 
 
 @app.route('/delete_user?id=<id>')
@@ -316,6 +317,7 @@ def blog_settings():
         blog_data = {
             'title': request.form.get('blog-title', None),
             'description': request.form.get('blog-description', None),
+            'beian': request.form.get('blog-beian', None),
             'per_page': request.form.get('blog-perpage', None),
             'text_search': request.form.get('blog-text-search', None)
         }
@@ -360,6 +362,7 @@ def install():
         blog_data = {
             'title': request.form.get('blog-title', None),
             'description': request.form.get('blog-description', None),
+            'beian': request.form.get('blog-beian', None),
             'per_page': request.form.get('blog-perpage', None),
             'text_search': request.form.get('blog-text-search', None)
         }
