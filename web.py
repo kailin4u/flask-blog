@@ -218,7 +218,8 @@ def login():
     return render_template('login.html',
                            meta_title='Login',
                            error=error,
-                           error_type=error_type)
+                           error_type=error_type,
+                           default_settings=app.config)
 
 
 @app.route('/logout')
